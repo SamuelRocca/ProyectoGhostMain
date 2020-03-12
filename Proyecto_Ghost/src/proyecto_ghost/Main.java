@@ -20,7 +20,9 @@ public class Main {
             Scanner leer = new Scanner (System.in).useDelimiter("\n");
             
             //Variables
+            boolean loop = true;
             int fantasmas = 0;
+            int MenuConfig = 0;
             int opcionMenu = 0;
             boolean logged = false;
             String usuario = null, contrasenia;
@@ -33,7 +35,7 @@ public class Main {
                             break;
                         }catch(InputMismatchException ex){
                             leer.next();
-                            System.out.println("Ingreso un caracter invalido. Intente otra vez");
+                            System.out.println("\nIngreso un caracter invalido. Intente otra vez");
                         }
                     }while(true);
                     switch (opcionMenu)
@@ -81,7 +83,7 @@ public class Main {
                     while(logged){
                         
                         //Menu Principal
-                        System.out.println("Bienvenido " + player.buscar(usuario).getNick() + "!");
+                        System.out.println("\nBienvenido " + player.buscar(usuario).getNick() + "!");
                         System.out.print("1. Jugar\t2. Configuracion\t3. Reportes\t4. Mi perfil\t5. Salir\nQue desea hacer?: ");
                         int opcionMenu2 = leer.nextInt();
                         
@@ -91,27 +93,53 @@ public class Main {
                                 //Aqui va la logica del juego
                                 break;
                             case 2:
-                                System.out.print("1. Dificultad\t2. Modo de Juego\t3. Regresar\nEscoga configuracion: ");
-                                int MenuConfig= leer.nextInt();
-                                
-                                switch(MenuConfig)
-                                {
-                                    case 1:
-                                            System.out.print("1. NORMAL\t2. EXPERT\t3. GENIUS\nSeleccione modo de juego: ");
-                                            int modoJuego = leer.nextInt();
-                                            
-                                            if (modoJuego == 1)
-                                                fantasmas = 8;
-                                            if (modoJuego == 2)
-                                                fantasmas = 4;
-                                            if(modoJuego == 3)
-                                                fantasmas = 2;
-                                            
-                                        break;
-                                }
+                                do{
+                                    System.out.print("\n1. Dificultad\t2. Modo de Juego\t3. Regresar\nEscoga configuracion: ");
+                                    MenuConfig= leer.nextInt();
+
+                                    switch(MenuConfig)
+                                    {
+                                        case 1:
+                                                System.out.print("\n1. NORMAL\t2. EXPERT\t3. GENIUS\nSeleccione modo de juego: ");
+                                                int modoJuego = leer.nextInt();
+
+                                                if (modoJuego == 1)
+                                                    fantasmas = 8;
+                                                if (modoJuego == 2)
+                                                    fantasmas = 4;
+                                                if(modoJuego == 3)
+                                                    fantasmas = 2;
+
+                                            break;
+
+                                    }
+                                }while(loop);
                                 break;
+                            case 3:
+                                Reportes:do{
+                                System.out.print("\n1. Descripción De mis Últimos 10 Juegos\t2. Ranking de Jugadores\t3. Regresar\nEscoga una opcion: ");
+                                MenuConfig= leer.nextInt();
+                                    switch(MenuConfig){
+                                        case 1:
+                                            
+                                            break;
+                                        case 2:
+                                            
+                                            break;
+                                        case 3:
+                                            
+                                            break Reportes;
+                                        default:
+                                            break;
+                                    }
+                                }while(loop);
+                            case 4:
+                                
+                                break;
+                                
                             case 5:
                                 logged = false;
+                                break;
                         }//Fin del switch menu principal
                     }
                     
