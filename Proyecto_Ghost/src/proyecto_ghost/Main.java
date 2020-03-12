@@ -97,7 +97,7 @@ public class Main {
                                 switch(MenuConfig)
                                 {
                                     case 1:
-                                            System.out.print("1. NORMAL\t2. EXPERT\t3. GENIUS");
+                                            System.out.print("1. NORMAL\t2. EXPERT\t3. GENIUS\nSeleccione modo de juego: ");
                                             int modoJuego = leer.nextInt();
                                             
                                             if (modoJuego == 1)
@@ -106,7 +106,6 @@ public class Main {
                                                 fantasmas = 4;
                                             if(modoJuego == 3)
                                                 fantasmas = 2;
-                                            
                                             
                                         break;
                                 }
