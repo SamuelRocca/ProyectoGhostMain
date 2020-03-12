@@ -5,6 +5,7 @@ public class Player {
         
     private int  puntos;
     private String nick, contra;
+    private boolean logged;
     
     public Player (String nombre, String contra) //Constructo requiere nickname y contraseña
     {
@@ -12,8 +13,6 @@ public class Player {
         this.contra = contra;
         puntos = 0;
     }
-    
-    
     public void AgregarPuntos ()
     {
         puntos += 3;

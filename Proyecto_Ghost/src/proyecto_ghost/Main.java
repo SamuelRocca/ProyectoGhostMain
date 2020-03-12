@@ -78,7 +78,7 @@ public class Main {
                             break;
                     }//Fin del switch opciones menu inicio
                 
-                    while(logged==true){
+                    while(logged){
                         
                         //Menu Principal
                         System.out.println("Bienvenido " + player.buscar(usuario).getNick() + "!");
@@ -110,10 +110,9 @@ public class Main {
                                             
                                         break;
                                 }
-                                    
-                                
-                                
                                 break;
+                            case 5:
+                                logged = false;
                         }//Fin del switch menu principal
                     }
                     
