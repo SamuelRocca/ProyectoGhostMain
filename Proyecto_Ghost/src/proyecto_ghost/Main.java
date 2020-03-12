@@ -20,6 +20,7 @@ public class Main {
             Scanner leer = new Scanner (System.in).useDelimiter("\n");
             
             //Variables
+            int fantasmas = 0;
             int opcionMenu = 0;
             boolean logged = false;
             String usuario = null, contrasenia;
@@ -100,7 +101,11 @@ public class Main {
                                             int modoJuego = leer.nextInt();
                                             
                                             if (modoJuego == 1)
-                                                
+                                                fantasmas = 8;
+                                            if (modoJuego == 2)
+                                                fantasmas = 4;
+                                            if(modoJuego == 3)
+                                                fantasmas = 2;
                                             
                                             
                                         break;
