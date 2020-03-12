@@ -21,7 +21,8 @@ public class Main {
             
             //Variables
             int opcionMenu = 0;
-            String usuario, contrasenia;
+            boolean logged = false;
+            String usuario = null, contrasenia;
             
             do{
                 
@@ -38,16 +39,12 @@ public class Main {
                                 
                                 if(player.VerificarUsuario(usuario, contrasenia))
                                 {
-                                    //Menu Principal
-                                        System.out.println("Bienvenido " + player.buscar(usuario).getNick() + "!");
-                                        System.out.print("1. Jugar\t2. Configuracion\t3. Reportes\t4. Mi perfil\t5. Salir\nQue desea hacer?: ");
-                                        int opcionMenu2 = leer.nextInt();
+                                    logged = true;
                                 }else
                                 {
                                     System.out.print("Contraseña o usuario incorrectos!");
                                 }              
                                 
-                                usuario = null;
                                 contrasenia = null;
                             break;
                             
@@ -60,17 +57,57 @@ public class Main {
                                 if (player.Agregar(usuario, contrasenia))
                                 {
                                     System.out.println("Usuario Registrado con exito");
+                                    logged = true;
                                 }else
                                 {
                                     System.out.println("Nombre de usuario ya esta registrado!");
                                     break;
                                 }
                                 
-                                usuario = null;
                                 contrasenia = null;
                             break;
-                    }
+                        case 3:
+                            System.out.println("Saliendo del sistema...");
+                            break;
+                    }//Fin del switch opciones menu inicio
                 
+                    if (logged == true)
+                    {
+                        //Menu Principal
+                        System.out.println("Bienvenido " + player.buscar(usuario).getNick() + "!");
+                        System.out.print("1. Jugar\t2. Configuracion\t3. Reportes\t4. Mi perfil\t5. Salir\nQue desea hacer?: ");
+                        int opcionMenu2 = leer.nextInt();
+                        
+                        switch (opcionMenu2)
+                        {
+                            case 1:
+                                //Aqui va la logica del juego
+                                break;
+                            case 2:
+                                System.out.print("1. Dificultad\t2. Modo de Juego\t3. Regresar\nEscoga configuracion: ");
+                                int MenuConfig= leer.nextInt();
+                                
+                                switch(MenuConfig)
+                                {
+                                    case 1:
+                                            System.out.print("1. NORMAL\t2. EXPERT\t3. GENIUS");
+                                            int modoJuego = leer.nextInt();
+                                            
+                                            if (modoJuego == 1)
+                                                
+                                            
+                                            
+                                        break;
+                                }
+                                    
+                                
+                                
+                                break;
+                        }//Fin del switch menu principal
+                    }
+                    
+                    
+                    
             }while(opcionMenu != 3);
             
             
