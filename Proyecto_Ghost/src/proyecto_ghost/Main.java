@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package proyecto_ghost;
-
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -25,10 +25,16 @@ public class Main {
             String usuario = null, contrasenia;
             
             do{
-                
-                    System.out.print("\t\t\t\tGhosts\n1. Login\t2. Crear Player\t\t3. Salir\nIngrese una opcion: ");
-                    opcionMenu = leer.nextInt();
-                    
+                    do{
+                        try{
+                            System.out.print("\t\t\t\tGhosts\n1. Login\t2. Crear Player\t\t3. Salir\nIngrese una opcion: ");
+                            opcionMenu = leer.nextInt();
+                            break;
+                        }catch(InputMismatchException ex){
+                            leer.next();
+                            System.out.println("Ingreso un caracter invalido. Intente otra vez");
+                        }
+                    }while(true);
                     switch (opcionMenu)
                     {
                         case 1:
@@ -71,8 +77,8 @@ public class Main {
                             break;
                     }//Fin del switch opciones menu inicio
                 
-                    if (logged == true)
-                    {
+                    while(logged==true){
+                        
                         //Menu Principal
                         System.out.println("Bienvenido " + player.buscar(usuario).getNick() + "!");
                         System.out.print("1. Jugar\t2. Configuracion\t3. Reportes\t4. Mi perfil\t5. Salir\nQue desea hacer?: ");
