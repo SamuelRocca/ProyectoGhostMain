@@ -22,7 +22,7 @@ public class Main {
             Random r = new Random();
             //Variables
             boolean loop = true;
-            int fantasmas = 0;
+            int fantasmas = 8;
             int MenuConfig = 0;
             int opcionMenu = 0;
             boolean logged = false;
@@ -92,14 +92,13 @@ public class Main {
                         {
                             case 1:
                                 do{
-                                System.out.println("Nombre del jugador 2:");
+                                System.out.print("Nombre del jugador 2: ");
                                 String usuario2 = leer.next();
                                 
                                 if (player.buscar(usuario2) != null)
                                 {
-                                    int tipo = r.nextInt(2);
-                                    tablero.CrearTablero();
-                                    tablero.DibujarFantasmas();
+                                    tablero.AsignarFantasmas(fantasmas);
+                                    tablero.ImprimirCasillas();
                                 }else
                                 {
                                     System.out.println("El jugador 2 no existe!");
@@ -125,7 +124,12 @@ public class Main {
                                                     fantasmas = 2;
 
                                             break;
-
+                                        case 2:
+                                            break;
+                                        case 3:
+                                                loop = false;
+                                            break;
+                                        
                                     }
                                 }while(loop);
                                 break;

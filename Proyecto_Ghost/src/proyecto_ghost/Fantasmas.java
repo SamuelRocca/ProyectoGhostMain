@@ -5,21 +5,27 @@ public class Fantasmas {
         
         
         Player jugador;
-        String tipo;
+        private String tipo, numJugador = "f";
         int cantidad = 8;
     
-        public Fantasmas (int tipo)
+        public Fantasmas (int tipo, int numJugador)
         {
             if (tipo == 1)
                 this.tipo = "Bueno";
             else
                 this.tipo = "Malo";
             
+            this.numJugador += Integer.toString(numJugador);
             
         }
-        
-        public void moverse (int x, int y)
+          
+        public String getTipo()
         {
-            
+            return tipo;
+        }
+        
+        public String getNum()
+        {
+            return numJugador;
         }
 }
