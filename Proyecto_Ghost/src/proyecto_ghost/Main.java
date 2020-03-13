@@ -99,7 +99,7 @@ public class Main {
                                 {
                                     int tipo = r.nextInt(2);
                                     tablero.CrearTablero();
-                                    tablero.DibujarFantasmas(4);
+                                    tablero.DibujarFantasmas();
                                 }else
                                 {
                                     System.out.println("El jugador 2 no existe!");

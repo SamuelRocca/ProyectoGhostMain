@@ -1,10 +1,33 @@
 
 package proyecto_ghost;
 
+import java.util.Random;
+
 public class Tablero {
-    
+    Random r = new Random();
     public static String casillas[][]= new String[7][7];
-    private int cantidad = 8;
+    public Fantasmas fantasmas1[];
+    public Fantasmas fantasmas2[];
+    
+    public void AsignarFantasmas(int cantidad)
+    {
+        fantasmas1 = new Fantasmas[cantidad];
+        fantasmas2 = new Fantasmas[cantidad];
+        
+        for (int i = 0; i < fantasmas1.length;i++)
+        {
+            int tipo = r.nextInt(2);
+            fantasmas1[i] = new Fantasmas(tipo);
+        }
+        
+        for(int i = 0; i < fantasmas2.length;i++)
+        {
+            int tipo = r.nextInt(2);
+            fantasmas2[i] = new Fantasmas(tipo);
+        }
+        
+        
+    }
     
     public void CrearTablero()
     {
@@ -28,13 +51,12 @@ public class Tablero {
         }      
     }
     
-    public void DibujarFantasmas(int cantidad)
+    public void DibujarFantasmas()
     {
-        this.cantidad = cantidad;
-        
-        for (int f = 0; f < casillas.length; f++)
+
+        for (int f = 0; f < fantasmas1.length; f++)
         {
-            for (int c = 0; c < casillas.length; c++)
+            for (int c = 0; c < fantasmas1.length; c++)
             {
                 if (f != 0 && c != 0 && c != 1 &&  c != 5 && c!= 7)
                 {
@@ -46,7 +68,7 @@ public class Tablero {
         ImprimirTablero();
     }
     
-    public void DibujarFantasma(Player jugador,String num, int tipo)
+    /*public void DibujarFantasma(Player jugador,String num, int tipo)
     {
         Fantasmas fantasma = new Fantasmas(jugador, num, tipo);
         
@@ -59,6 +81,6 @@ public class Tablero {
             }
         }
         
-    }
+    }*/
     
 }   

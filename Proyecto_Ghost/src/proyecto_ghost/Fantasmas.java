@@ -8,14 +8,13 @@ public class Fantasmas {
         String tipo;
         int cantidad = 8;
     
-        public Fantasmas (int tipo, int cantidad)
+        public Fantasmas (int tipo)
         {
             if (tipo == 1)
                 this.tipo = "Bueno";
             else
                 this.tipo = "Malo";
             
-            this.cantidad = cantidad;
             
         }
         
