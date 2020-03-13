@@ -5,15 +5,18 @@ public class Fantasmas {
         
         
         Player jugador;
-        String fantasmaJugador;
         String tipo;
         int cantidad = 8;
     
-        public Fantasmas (Player jugador, String numJugador, String tipo)
+        public Fantasmas (int tipo, int cantidad)
         {
-            this.tipo = tipo;
-            this.jugador = jugador;
-            fantasmaJugador = "F" + numJugador;
+            if (tipo == 1)
+                this.tipo = "Bueno";
+            else
+                this.tipo = "Malo";
+            
+            this.cantidad = cantidad;
+            
         }
         
         public void moverse (int x, int y)

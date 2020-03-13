@@ -5,6 +5,7 @@
  */
 package proyecto_ghost;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -14,11 +15,11 @@ import java.util.Scanner;
 public class Main {
     
     public static AgregarPlayer player = new AgregarPlayer(10);
-    
+    public static Tablero tablero = new Tablero();
     public static void main(String[] args) {
             //Constructores
             Scanner leer = new Scanner (System.in).useDelimiter("\n");
-            
+            Random r = new Random();
             //Variables
             boolean loop = true;
             int fantasmas = 0;
@@ -90,7 +91,20 @@ public class Main {
                         switch (opcionMenu2)
                         {
                             case 1:
-                                //Aqui va la logica del juego
+                                do{
+                                System.out.println("Nombre del jugador 2:");
+                                String usuario2 = leer.next();
+                                
+                                if (player.buscar(usuario2) != null)
+                                {
+                                    int tipo = r.nextInt(2);
+                                    tablero.CrearTablero();
+                                    tablero.DibujarFantasmas(4);
+                                }else
+                                {
+                                    System.out.println("El jugador 2 no existe!");
+                                }
+                                }while(loop);
                                 break;
                             case 2:
                                 do{
