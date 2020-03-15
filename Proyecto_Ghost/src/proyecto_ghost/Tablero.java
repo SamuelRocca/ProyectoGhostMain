@@ -46,22 +46,23 @@ public class Tablero {
     }
     
     
-       public void ImprimirCasillas()
+       public void Normal()
     {
-        
-        for (int f = 0;f<casillas.length;f++)
+        for (int f = 0;f<tablero.length;f++)
         {
-            for (int c = 0; c < casillas.length;c++)
+            for (int c = 0; c < tablero.length;c++)
             {
                 if (tablero[f][c] == 0)
                     casillas[f][c] = "_ ";
-                if(tablero[f][c] < 0)
+                else if(tablero[f][c] < 0)
                     casillas[f][c] = fantasmas2[c].getNum();
-                if(tablero[f][c] > 0 && c != 0 && f != 0)
+                else if(tablero[f][c] > 0 && c != 0 && f != 0)
                     casillas[f][c] = fantasmas1[c].getNum();
-                if (c==0)
+                else if (tablero[f][c] > 0 && c != 0 && f != 0)
+                    casillas[f][c] = "_ ";
+                else if (c==0 && f != 0)
                     casillas[f][c] = Integer.toString(tablero[f][c]);
-                if (c == 0 && f == 0)
+                else if (c == 0 && f == 0)
                     casillas[f][c] = " ";
                 
                 for (int a = 0;a<casillas.length;a++)
@@ -72,12 +73,109 @@ public class Tablero {
                     }
                 }
                      
-                
             }
         }
         ImprimirTablero();
     }
     
+    public void Expert()
+    {
+        
+        int f1 = 0;//Contar cuantos fantasmas se han colocado
+        int f2 = 0;
+         for (int f = 0;f<tablero.length;f++)
+        {
+            for (int c = 0; c < tablero.length;c++)
+            {
+                if (tablero[f][c] == 0)
+                    casillas[f][c] = "_ ";
+                else if(tablero[f][c] < 0 && tablero[f][c] > -5)
+                {
+                    casillas[f][c] = fantasmas2[f2].getNum();
+                    f2++;
+                }
+                else if (tablero[f][c] < 0 && tablero[f][c] <= -5)
+                     casillas[f][c] = "_ ";
+                else if(tablero[f][c] > 0  && c != 0 && f != 0 && tablero[f][c] < 5)
+                {
+                    casillas[f][c] = fantasmas1[f1].getNum();
+                    f1++;
+                }
+                else if (tablero[f][c] > 0 && c != 0 && f != 0 && tablero[f][c] >= 5)
+                    casillas[f][c] = "_ ";
+                else if (tablero[f][c] > 0 && c != 0 && f != 0)
+                    casillas[f][c] = "_ ";
+                else if (c==0 && f != 0)
+                    casillas[f][c] = Integer.toString(tablero[f][c]);
+                else if (c == 0 && f == 0)
+                    casillas[f][c] = " ";
+                
+                for (int a = 0;a<casillas.length;a++)
+                {
+                    for (int b = 1;b<casillas.length;b++)
+                    {
+                        casillas[0][b] = Integer.toString(b) + " ";
+                    }
+                }
+                     
+            }//Cierre del segundo for
+        }//Cierre del primer for
+         ImprimirTablero();
+    }
+    
+    public void Genius()
+    {
+        int f1 = 0;//Contar cuantos fantasmas se han colocado
+        int f2 = 0;
+         for (int f = 0;f<tablero.length;f++)
+        {
+            for (int c = 0; c < tablero.length;c++)
+            {
+                if (tablero[f][c] == 0)
+                    casillas[f][c] = "_ ";
+                else if(tablero[f][c] < 0 && (tablero[f][c] == -2 || tablero[f][c] == -3) )
+                {
+                    casillas[f][c] = fantasmas2[f2].getNum();
+                    f2++;
+                }
+                else if (tablero[f][c] < 0)
+                     casillas[f][c] = "_ ";
+                else if(tablero[f][c] > 0  && c != 0 && f != 0 && (tablero[f][c] == 2 || tablero[f][c] == 3))
+                {
+                    casillas[f][c] = fantasmas1[f1].getNum();
+                    f1++;
+                }
+                else if (tablero[f][c] > 0 && c != 0 && f != 0)
+                    casillas[f][c] = "_ ";
+                else if (tablero[f][c] > 0 && c != 0 && f != 0)
+                    casillas[f][c] = "_ ";
+                else if (c==0 && f != 0)
+                    casillas[f][c] = Integer.toString(tablero[f][c]);
+                else if (c == 0 && f == 0)
+                    casillas[f][c] = " ";
+                
+                for (int a = 0;a<casillas.length;a++)
+                {
+                    for (int b = 1;b<casillas.length;b++)
+                    {
+                        casillas[0][b] = Integer.toString(b) + " ";
+                    }
+                }
+                     
+            }//Cierre del segundo for
+        }//Cierre del primer for
+         ImprimirTablero();
+    }
+    
+    public void tablero()
+    {
+        if (fantasmas1.length == 8)
+            Normal();
+        else if (fantasmas1.length == 4)
+            Expert();
+        else if (fantasmas1.length == 2)
+            Genius();
+    }
     
     
     public void CrearTablero()

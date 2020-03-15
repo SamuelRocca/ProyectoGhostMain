@@ -1,17 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyecto_ghost;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- *
- * @author samue
- */
 public class Main {
     
     public static AgregarPlayer player = new AgregarPlayer(10);
@@ -95,13 +87,13 @@ public class Main {
                                 System.out.print("Nombre del jugador 2: ");
                                 String usuario2 = leer.next();
                                 
-                                if (player.buscar(usuario2) != null)
+                                if (player.buscar(usuario2) != null && player.buscar(usuario2) != player.buscar(usuario))
                                 {
                                     tablero.AsignarFantasmas(fantasmas);
-                                    tablero.ImprimirCasillas();
+                                    tablero.tablero();
                                 }else
                                 {
-                                    System.out.println("El jugador 2 no existe!");
+                                    System.out.println("Vuelve a intentarlo!");
                                 }
                                 }while(loop);
                                 break;
@@ -156,6 +148,7 @@ public class Main {
                                 break;
                                 
                             case 5:
+                                fantasmas = 8;
                                 logged = false;
                                 break;
                         }//Fin del switch menu principal
