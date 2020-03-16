@@ -13,8 +13,8 @@ public class Main {
             Scanner leer = new Scanner (System.in).useDelimiter("\n");
             Random r = new Random();
             //Variables
-            boolean loop = true;
-            int fantasmas = 8;
+            boolean loop = true, victoria = false;
+            int fantasmas = 8, turno = 0;
             int MenuConfig = 0;
             int opcionMenu = 0;
             boolean logged = false;
@@ -85,16 +85,37 @@ public class Main {
                             case 1:
                                 do{
                                 System.out.print("Nombre del jugador 2: ");
-                                String usuario2 = leer.next();
-                                
-                                if (player.buscar(usuario2) != null && player.buscar(usuario2) != player.buscar(usuario))
+                                Player jugador2 = player.buscar(leer.next());
+                                Player jugador1 = player.buscar(usuario);
+                                if (jugador2 != null && jugador2 != jugador1)
                                 {
                                     tablero.AsignarFantasmas(fantasmas);
-                                    tablero.tablero();
+                                    tablero.CrearTablero();
+                                    do{
+                                            tablero.ImprimirTablero();
+                                            System.out.println("\n\t\t\tTurno  de: " + (turno==0 ? jugador1.getNick() : jugador2.getNick()));
+                                            System.out.print("Escoge una coordenada de seleccion en filas: ");
+                                            int filas = leer.nextInt();
+                                            System.out.print("Escoge una coordenada de seleccion en columnas: ");
+                                            int columnas = leer.nextInt();
+                                            System.out.print("Ingrese coordenada de movimiento en filas: ");
+                                            int filas1= leer.nextInt();
+                                            System.out.print("Ingrese coordenada de movimiento en columnas: ");
+                                            int columnas1 = leer.nextInt();
+                                            
+                                            tablero.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1);
+                                            
+                                            if (turno > 0)
+                                                turno--;
+                                            else
+                                                turno++;                                        
+                                    }while (!victoria);
                                 }else
                                 {
                                     System.out.println("Vuelve a intentarlo!");
                                 }
+                                
+                                
                                 }while(loop);
                                 break;
                             case 2:

@@ -12,7 +12,7 @@ public class Fantasmas {
         {
             if (tipo == 1)
                 this.tipo = "Bueno";
-            else
+            else if (tipo == 0)
                 this.tipo = "Malo";
             
             this.numJugador += Integer.toString(numJugador);

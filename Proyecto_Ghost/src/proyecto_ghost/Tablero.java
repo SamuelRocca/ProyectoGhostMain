@@ -6,7 +6,7 @@ import java.util.Random;
 public class Tablero {
     Random r = new Random();
     public static String casillas[][]= new String[7][7];
-    private int tablero[][] = {{1,2,3,4,5,6,7},{1,0,-1,-2,-3,-4,0},{2,0,-5,-6,-7,-8,0},{3,0,0,0,0,0,0},{4,0,0,0,0,0,0},{5,0,5,6,7,8,0},{6,0,1,2,3,4,0}};
+    private static int tablero[][] = {{1,2,3,4,5,6,7},{1,0,-1,-2,-3,-4,0},{2,0,-5,-6,-7,-8,0},{3,0,0,0,0,0,0},{4,0,0,0,0,0,0},{5,0,5,6,7,8,0},{6,0,1,2,3,4,0}};
     /*
         arrgelo tablero se utiliza para validar la posicion en la que deben ir los fantasmas y los guiones en las casillas, en los numeros negativos
         iran los fantasmas del jugador 2 en los positivos ira el jugador 1 y los primeros numeros positivos de la fila son para mostrar el numero 
@@ -14,6 +14,8 @@ public class Tablero {
     */
     public Fantasmas fantasmas1[];
     public Fantasmas fantasmas2[];
+    private static int fantasmasComidos1 = 0;
+    private static int fantasmasComidos2 = 0;
 
        public void ImprimirTablero(){
         for(int f=0; f<7; f++){
@@ -27,18 +29,59 @@ public class Tablero {
     
     public void AsignarFantasmas(int cantidad)
     {
+        int malo = 0;
+        int bueno = 0;
         fantasmas1 = new Fantasmas[cantidad];
         fantasmas2 = new Fantasmas[cantidad];
         
         for (int i = 0; i < fantasmas1.length;i++)
         {
-            int tipo = r.nextInt(2);
+            int tipo = r.nextInt(1);
+            if (tipo == 0)
+            {
+                malo++;
+                if(malo > cantidad/2)
+                {
+                    tipo = 1;
+                    bueno++;
+                }
+            }
+            else if(tipo == 1)
+            {
+                bueno++;
+                if(bueno > cantidad/2)
+                {
+                    tipo = 0;
+                    malo++;
+                }
+            }
+            
             fantasmas1[i] = new Fantasmas(tipo, 1);
+            System.out.println(tipo);
         }
-        
+        malo = 0;
+        bueno = 0;
         for(int i = 0; i < fantasmas2.length;i++)
         {
-            int tipo = r.nextInt(2);
+            int tipo = r.nextInt(1);
+            if (tipo == 0)
+            {      
+                if(malo > cantidad/2)
+                {
+                    tipo = 1;
+                    bueno++;
+                }else
+                    malo++;
+            }
+            else if(tipo == 1)
+            {
+                if(bueno > cantidad/2)
+                {
+                    tipo = 0;
+                    malo++;
+                }else
+                    bueno++;
+            }
             fantasmas2[i] = new Fantasmas(tipo, 2);
         }
         
@@ -75,7 +118,6 @@ public class Tablero {
                      
             }
         }
-        ImprimirTablero();
     }
     
     public void Expert()
@@ -120,7 +162,6 @@ public class Tablero {
                      
             }//Cierre del segundo for
         }//Cierre del primer for
-         ImprimirTablero();
     }
     
     public void Genius()
@@ -164,7 +205,6 @@ public class Tablero {
                      
             }//Cierre del segundo for
         }//Cierre del primer for
-         ImprimirTablero();
     }
     
     public void tablero()
@@ -177,6 +217,59 @@ public class Tablero {
             Genius();
     }
     
+    public void MostrarFantasmas()
+    {
+        int bueno = 0;
+        int malo = 0;
+        for (Fantasmas ghost1 : fantasmas1)
+        {
+            if(ghost1.getTipo().equals("Bueno"))
+                bueno++;
+            else
+                malo++;
+        }
+    }
+    
+    public boolean Comer(int turno,int a,int b)
+    {
+        if (turno == 0)
+        {
+            if (casillas[a][b].equals("f2"))
+            {
+                casillas[a][b] = "f1";
+                return true;
+            }
+        }else
+        {
+            if (casillas[a][b].equals("f1"))
+            {
+                casillas[a][b] = "f2";
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void Mover(int x,int y,int a, int b,int turno,Player jugador)
+    {
+        if(casillas[a][b].equals("_ ") && !casillas[x][x].equals("_"))
+        {
+            casillas[a][b] = casillas[x][y]; 
+            casillas[x][y] = "_ ";
+        }else
+        {
+            if (Comer(turno,a,b))
+            {
+                casillas[x][y] = "_ ";
+                System.out.println("\nTe has comido un fantasma " + (turno==0 ? fantasmas2[fantasmasComidos2].getTipo() : fantasmas1[fantasmasComidos1].getTipo()) + 
+                                                                                                                                                                                                                                                " de " + jugador.getNick());
+                if(turno == 0)
+                    fantasmasComidos2++;
+                else
+                    fantasmasComidos1++;
+            }
+        }
+    }
     
     public void CrearTablero()
     {
@@ -203,7 +296,12 @@ public class Tablero {
             }
         }
         
-        ImprimirTablero();
+         for(int f=0; f<7; f++){
+            for(int c=0; c<7; c++){
+                System.out.print(casillas[f][c] + " ");
+            }
+            System.out.println("");
+        }      
             
     }
     
