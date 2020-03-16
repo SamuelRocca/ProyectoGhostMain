@@ -90,7 +90,7 @@ public class Main {
                                 if (jugador2 != null && jugador2 != jugador1)
                                 {
                                     tablero.AsignarFantasmas(fantasmas);
-                                    tablero.CrearTablero();
+                                    tablero.tablero();
                                     do{
                                             tablero.ImprimirTablero();
                                             System.out.println("\n\t\t\tTurno  de: " + (turno==0 ? jugador1.getNick() : jugador2.getNick()));
@@ -105,7 +105,7 @@ public class Main {
                                             
                                             tablero.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1);
                                             
-                                            if (turno > 0)
+                                            if (turno > 0)//Cambia entre 0 y 1 para validar de quien es el turno
                                                 turno--;
                                             else
                                                 turno++;                                        

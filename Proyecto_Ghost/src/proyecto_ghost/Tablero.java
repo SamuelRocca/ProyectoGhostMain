@@ -29,18 +29,18 @@ public class Tablero {
     
     public void AsignarFantasmas(int cantidad)
     {
-        int malo = 0;
-        int bueno = 0;
-        fantasmas1 = new Fantasmas[cantidad];
+        int malo = 0;//Cuanto cuantos fantasmas de cada tipo se han puesto para no pasar de la mitad
+        int bueno = 0;//
+        fantasmas1 = new Fantasmas[cantidad];//Le da al arreglo la cantidad ingresada en el parametro que es depende de la dificultad
         fantasmas2 = new Fantasmas[cantidad];
         
         for (int i = 0; i < fantasmas1.length;i++)
         {
-            int tipo = r.nextInt(1);
-            if (tipo == 0)
+            int tipo = r.nextInt(1);//crea un numero aleatorio
+            if (tipo == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
             {
                 malo++;
-                if(malo > cantidad/2)
+                if(malo > cantidad/2)//Si la cantidad de fantasmas sobrepasa la mitad se cambia el tipo de fantasma para conseguir la misma cantidad de fantasmas
                 {
                     tipo = 1;
                     bueno++;
@@ -56,10 +56,9 @@ public class Tablero {
                 }
             }
             
-            fantasmas1[i] = new Fantasmas(tipo, 1);
-            System.out.println(tipo);
+            fantasmas1[i] = new Fantasmas(tipo, 1); //Se crea en esa posicion un nuevo fantasma de ese tipo, el numero 1 es por el turno del jugador
         }
-        malo = 0;
+        malo = 0;//Se reincian las variables para contar los fantasmas del jugador 2
         bueno = 0;
         for(int i = 0; i < fantasmas2.length;i++)
         {
@@ -89,7 +88,7 @@ public class Tablero {
     }
     
     
-       public void Normal()
+       public void Normal()//Se crea el tablero para la dificultad normal
     {
         for (int f = 0;f<tablero.length;f++)
         {
@@ -120,7 +119,7 @@ public class Tablero {
         }
     }
     
-    public void Expert()
+    public void Expert()//Se crea el tablero para la dificultad expert
     {
         
         int f1 = 0;//Contar cuantos fantasmas se han colocado
@@ -164,7 +163,7 @@ public class Tablero {
         }//Cierre del primer for
     }
     
-    public void Genius()
+    public void Genius()//Se crea el tablero para la dificultad genius
     {
         int f1 = 0;//Contar cuantos fantasmas se han colocado
         int f2 = 0;
@@ -209,6 +208,7 @@ public class Tablero {
     
     public void tablero()
     {
+        //Valida cuanto es el tamaño del arreglopara saber que tablero imprimir
         if (fantasmas1.length == 8)
             Normal();
         else if (fantasmas1.length == 4)
@@ -217,7 +217,7 @@ public class Tablero {
             Genius();
     }
     
-    public void MostrarFantasmas()
+    /*public void MostrarFantasmas() 
     {
         int bueno = 0;
         int malo = 0;
@@ -228,15 +228,15 @@ public class Tablero {
             else
                 malo++;
         }
-    }
+    }*/
     
     public boolean Comer(int turno,int a,int b)
     {
-        if (turno == 0)
+        if (turno == 0)//Valida de quien es el turno para saber que pieza tiene que comer
         {
             if (casillas[a][b].equals("f2"))
             {
-                casillas[a][b] = "f1";
+                casillas[a][b] = "f1";//Si puede comer, cambia esa posicion por el fantasma del jugador y retorna true
                 return true;
             }
         }else
@@ -250,8 +250,8 @@ public class Tablero {
         return false;
     }
     
-    public void Mover(int x,int y,int a, int b,int turno,Player jugador)
-    {
+    public void Mover(int x,int y,int a, int b,int turno,Player jugador)//"x" y "y" son la coordenada de seleccion y "a" y "b" la coordenada de movimiento
+    {                                                                                                       //el jugador es el contrario al del turno actual, es usado para imprimir el tipo de fantasma comido
         if(casillas[a][b].equals("_ ") && !casillas[x][x].equals("_"))
         {
             casillas[a][b] = casillas[x][y]; 
