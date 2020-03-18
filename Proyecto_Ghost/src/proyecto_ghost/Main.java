@@ -17,6 +17,7 @@ public class Main {
             int fantasmas = 8, turno = 0;
             int MenuConfig = 0;
             int opcionMenu = 0;
+            int filas = 0,filas1 = 0,columnas = 0,columnas1=0;
             boolean logged = false;
             String usuario = null, contrasenia;
             
@@ -94,14 +95,22 @@ public class Main {
                                     do{
                                             tablero.ImprimirTablero();
                                             System.out.println("\n\t\t\tTurno  de: " + (turno==0 ? jugador1.getNick() : jugador2.getNick()));
-                                            System.out.print("Escoge una coordenada de seleccion en filas: ");
-                                            int filas = leer.nextInt();
-                                            System.out.print("Escoge una coordenada de seleccion en columnas: ");
-                                            int columnas = leer.nextInt();
-                                            System.out.print("Ingrese coordenada de movimiento en filas: ");
-                                            int filas1= leer.nextInt();
-                                            System.out.print("Ingrese coordenada de movimiento en columnas: ");
-                                            int columnas1 = leer.nextInt();
+                                            tablero.MostrarFantasmas(turno);
+                                            try
+                                            {
+                                                System.out.print("Escoge una coordenada de seleccion en filas: ");
+                                                filas = leer.nextInt();
+                                                System.out.print("Escoge una coordenada de seleccion en columnas: ");
+                                                columnas = leer.nextInt();
+                                                System.out.print("Ingrese coordenada de movimiento en filas: ");
+                                                filas1= leer.nextInt();
+                                                System.out.print("Ingrese coordenada de movimiento en columnas: ");
+                                                columnas1 = leer.nextInt();
+                                            }catch(Exception e)
+                                            {
+                                                leer.next();
+                                                System.out.println("\t\t\t\tValor incorrecto");
+                                            }
                                             
                                             tablero.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1);
                                             

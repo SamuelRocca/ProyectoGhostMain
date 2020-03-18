@@ -65,21 +65,21 @@ public class Tablero {
             int tipo = r.nextInt(1);
             if (tipo == 0)
             {      
+                malo++;
                 if(malo > cantidad/2)
                 {
                     tipo = 1;
                     bueno++;
-                }else
-                    malo++;
+                }
             }
             else if(tipo == 1)
             {
-                if(bueno > cantidad/2)
+                bueno++;
+                if(bueno>cantidad/2)
                 {
                     tipo = 0;
                     malo++;
-                }else
-                    bueno++;
+                }
             }
             fantasmas2[i] = new Fantasmas(tipo, 2);
         }
@@ -208,7 +208,7 @@ public class Tablero {
     
     public void tablero()
     {
-        //Valida cuanto es el tamaño del arreglopara saber que tablero imprimir
+        //Valida cuanto es el tamaño del arreglo para saber que tablero imprimir
         if (fantasmas1.length == 8)
             Normal();
         else if (fantasmas1.length == 4)
@@ -217,18 +217,38 @@ public class Tablero {
             Genius();
     }
     
-    /*public void MostrarFantasmas() 
+    public void MostrarFantasmas(int turno) //Este metodo sirve para mostrar la cantidad de fantasmas que tiene el jugador en turno
     {
         int bueno = 0;
         int malo = 0;
-        for (Fantasmas ghost1 : fantasmas1)
+        if(turno==0)
         {
-            if(ghost1.getTipo().equals("Bueno"))
-                bueno++;
-            else
-                malo++;
+            for (Fantasmas ghost1 : fantasmas1)
+            {
+                if(ghost1 != null)
+                {
+                    if(ghost1.getTipo().equals("Bueno"))
+                        bueno++;
+                    else
+                        malo++;
+                }
+            }
+        }else
+        {
+            for (Fantasmas ghost2 : fantasmas2)
+            {
+                if(ghost2 != null)
+                {
+                    if(ghost2.getTipo().equals("Bueno"))
+                        bueno++;
+                    else
+                        malo++;
+                }
+            }
         }
-    }*/
+        
+        System.out.println("\t\tBuenos: " + bueno + "\t\tMalos: " + malo);
+    }
     
     public boolean Comer(int turno,int a,int b)
     {
@@ -250,25 +270,47 @@ public class Tablero {
         return false;
     }
     
+    public boolean ValidarMovimiento(int x, int y,int a,int b, int turno)
+    {
+        if(casillas[a][b].equals("_ ") && b >1 && b <6)
+        {
+                if(casillas[x][y].equals("f1") && turno==0)
+                {
+                    if(a==x-1 && (b==y+1 || b==y-1 || b==y))
+                        return true;
+                }else if(casillas[x][y].equals("f2") && turno==1)
+                {
+                    if(a==x+1 && (b==y+1 || b==y-1 || b==y))
+                        return true;
+                }
+        }
+       
+        return false;
+    }
+    
     public void Mover(int x,int y,int a, int b,int turno,Player jugador)//"x" y "y" son la coordenada de seleccion y "a" y "b" la coordenada de movimiento
     {                                                                                                       //el jugador es el contrario al del turno actual, es usado para imprimir el tipo de fantasma comido
-        if(casillas[a][b].equals("_ ") && !casillas[x][x].equals("_"))
+        if(ValidarMovimiento(x,y,a,b,turno))
         {
             casillas[a][b] = casillas[x][y]; 
             casillas[x][y] = "_ ";
-        }else
+        }else if(Comer(turno,a,b))
         {
-            if (Comer(turno,a,b))
+            casillas[x][y] = "_ ";
+            System.out.println("\nTe has comido un fantasma " + (turno==0 ? fantasmas2[fantasmasComidos2].getTipo() : fantasmas1[fantasmasComidos1].getTipo()) + 
+                                                                                                                                                                                                                                            " de " + jugador.getNick());
+            if(turno == 0)
             {
-                casillas[x][y] = "_ ";
-                System.out.println("\nTe has comido un fantasma " + (turno==0 ? fantasmas2[fantasmasComidos2].getTipo() : fantasmas1[fantasmasComidos1].getTipo()) + 
-                                                                                                                                                                                                                                                " de " + jugador.getNick());
-                if(turno == 0)
-                    fantasmasComidos2++;
-                else
-                    fantasmasComidos1++;
+                fantasmas2[fantasmasComidos2] = null;
+                fantasmasComidos2++;
             }
-        }
+            else
+            {
+                fantasmas1[fantasmasComidos1] = null;
+                fantasmasComidos1++;
+            }
+        }else
+            System.out.println("\t\t\t\tMovimiento no valido!!");
     }
     
     public void CrearTablero()
