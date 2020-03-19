@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     
-    public static AgregarPlayer player = new AgregarPlayer(10);
-    public static Tablero tablero = new Tablero();
+    public static GhostGame game = new GhostGame();
     public static void main(String[] args) {
             //Constructores
             Scanner leer = new Scanner (System.in).useDelimiter("\n");
@@ -18,7 +17,7 @@ public class Main {
             int MenuConfig = 0;
             int opcionMenu = 0;
             int filas = 0,filas1 = 0,columnas = 0,columnas1=0;
-            boolean logged = false;
+            Player logged = null;
             String usuario = null, contrasenia;
             
             do{
@@ -40,9 +39,9 @@ public class Main {
                                 System.out.print("Contraseña: ");
                                 contrasenia = leer.next();
                                 
-                                if(player.VerificarUsuario(usuario, contrasenia))
+                                if(game.VerificarUsuario(usuario, contrasenia))
                                 {
-                                    logged = true;
+                                    game.setUserLogged(game.buscar(usuario)); //Se usa para establecer en la clase GhostGame el usuario que esta logged in
                                 }else
                                 {
                                     System.out.print("Contraseña o usuario incorrectos!");
@@ -57,10 +56,10 @@ public class Main {
                                 System.out.print("Ingrese una contraseña: ");
                                 contrasenia = leer.next();
                                 
-                                if (player.Agregar(usuario, contrasenia))
+                                if (game.Agregar(usuario, contrasenia))
                                 {
                                     System.out.println("Usuario Registrado con exito");
-                                    logged = true;
+                                    game.setUserLogged(game.buscar(usuario));
                                 }else
                                 {
                                     System.out.println("Nombre de usuario ya esta registrado!");
@@ -74,10 +73,10 @@ public class Main {
                             break;
                     }//Fin del switch opciones menu inicio
                 
-                    while(logged){
+                    while(game.getUserLogged() != null){//Se valida que haya un usario logged in para cargar el menu principal
                         
                         //Menu Principal
-                        System.out.println("\nBienvenido " + player.buscar(usuario).getNick() + "!");
+                        System.out.println("\nBienvenido " + game.buscar(usuario).getNick() + "!");
                         System.out.print("1. Jugar\t2. Configuracion\t3. Reportes\t4. Mi perfil\t5. Salir\nQue desea hacer?: ");
                         int opcionMenu2 = leer.nextInt();
                         
@@ -86,16 +85,16 @@ public class Main {
                             case 1:
                                 do{
                                 System.out.print("Nombre del jugador 2: ");
-                                Player jugador2 = player.buscar(leer.next());
-                                Player jugador1 = player.buscar(usuario);
+                                Player jugador2 = game.buscar(leer.next());
+                                Player jugador1 = game.buscar(usuario);
                                 if (jugador2 != null && jugador2 != jugador1)
                                 {
-                                    tablero.AsignarFantasmas(fantasmas);
-                                    tablero.tablero();
+                                    game.AsignarFantasmas(fantasmas);
+                                    game.tablero();
                                     do{
-                                            tablero.ImprimirTablero();
+                                            game.ImprimirTablero();
                                             System.out.println("\n\t\t\tTurno  de: " + (turno==0 ? jugador1.getNick() : jugador2.getNick()));
-                                            tablero.MostrarFantasmas(turno);
+                                            game.MostrarFantasmas(turno);
                                             do
                                             {
                                                 try
@@ -116,20 +115,18 @@ public class Main {
                                                     loop = false;
                                                 }
                                                 
-                                                if(!tablero.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1))
+                                                if(!game.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1))
                                                 {
                                                     System.out.println("\t\tCoordenada incorrecta porfavor vuelve a intentar!");
                                                     loop = false;
                                                 }
                                             }while(!loop);
                                             
-                                            
-                                            
                                             if (turno > 0)//Cambia entre 0 y 1 para validar de quien es el turno
                                                 turno--;
                                             else
                                                 turno++;                                        
-                                    }while (!victoria);
+                                    }while (!game.ValidarVictoria(0) || !game.ValidarVictoria(1));
                                 }else
                                 {
                                     System.out.println("Vuelve a intentarlo!");
@@ -190,7 +187,7 @@ public class Main {
                                 
                             case 5:
                                 fantasmas = 8;
-                                logged = false;
+                                game.setUserLogged(null);
                                 break;
                         }//Fin del switch menu principal
                     }

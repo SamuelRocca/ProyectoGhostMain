@@ -3,7 +3,7 @@ package proyecto_ghost;
 
 import java.util.Random;
 
-public class Tablero {
+public class GhostGame {
     Random r = new Random();
     public static String casillas[][]= new String[7][7];
     private static int tablero[][] = {{1,2,3,4,5,6,7},{1,0,-1,-2,-3,-4,0},{2,0,-5,-6,-7,-8,0},{3,0,0,0,0,0,0},{4,0,0,0,0,0,0},{5,0,5,6,7,8,0},{6,0,1,2,3,4,0}};
@@ -12,12 +12,72 @@ public class Tablero {
         iran los fantasmas del jugador 2 en los positivos ira el jugador 1 y los primeros numeros positivos de la fila son para mostrar el numero 
         de la coordenada los 0 son para los guiones
     */
+    public static Player players[];
+    private Player loggedUser;
     public Fantasmas fantasmas1[];
     public Fantasmas fantasmas2[];
     private static int fantasmasComidos1 = 0;
     private static int fantasmasComidos2 = 0;
 
-       public void ImprimirTablero(){
+    public GhostGame()
+    {
+        this.players = new Player[10];
+    }
+    
+    public Player buscar(String nick)
+    {
+        for (Player jugadorF : players) 
+        {
+            if (jugadorF != null) //Valida que la posicion del arreglo no este vacia
+            {
+                if (jugadorF.getNick().equals(nick))
+                {
+                    return jugadorF; //Si el jugador existe retorna ese jugador, todos sus atributos y metodos
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public boolean Agregar(String name, String contra)
+    {
+        if (buscar(name)==null) //Valida que el nickname este disponible utilizando la funcion de buscar
+        {
+            for (int p = 0; p <players.length;p++)
+            {
+                if (players[p] == null)
+                {
+                    players[p] = new Player(name,contra); //Si la posicion en p esta vacia, crea un nuevo player en esa posicion con ese nickname y contraseña
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean VerificarUsuario(String usuario, String contra)
+        {
+            Player jugadorM = buscar(usuario); //Busca si el usuario existe 
+            
+            if (jugadorM != null)
+            {
+                if (jugadorM.getContra().equals(contra)) // Valida que la contraseña ingresada sea igual a la contraseña del usuario
+                    return true;
+            }
+            
+            return false;
+        }
+ 
+    public Player getUserLogged(){
+        return loggedUser;
+    }
+    
+    public void setUserLogged(Player usuario){
+        loggedUser = usuario;
+    }
+    
+    public void ImprimirTablero(){
         for(int f=0; f<7; f++){
             for(int c=0; c<7; c++){
                 System.out.print(casillas[f][c] + " ");
@@ -25,8 +85,7 @@ public class Tablero {
             System.out.println("");
         }      
     }
-    
-    
+
     public void AsignarFantasmas(int cantidad)
     {
         int malo = 0;//Cuanto cuantos fantasmas de cada tipo se han puesto para no pasar de la mitad
@@ -36,7 +95,7 @@ public class Tablero {
         
         for (int i = 0; i < fantasmas1.length;i++)
         {
-            int tipo = r.nextInt(1);//crea un numero aleatorio
+            int tipo = r.nextInt(2);//crea un numero aleatorio
             if (tipo == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
             {
                 malo++;
@@ -86,9 +145,7 @@ public class Tablero {
         
         
     }
-    
-    
-       public void Normal()//Se crea el tablero para la dificultad normal
+    public void Normal()//Se crea el tablero para la dificultad normal
     {
         for (int f = 0;f<tablero.length;f++)
         {
@@ -249,22 +306,25 @@ public class Tablero {
         System.out.println("\t\tBuenos: " + bueno + "\t\tMalos: " + malo);
     }
     
-    public boolean Comer(int turno,int a,int b)
+    public boolean Comer(int turno,int a,int b,int x,int y)
     {
         try{
-            if (turno == 0)//Valida de quien es el turno para saber que pieza tiene que comer
+            if(ValidarMovimiento(x,y,a,b,turno))
             {
-                if (casillas[a][b].equals("f2"))
+                if (turno == 0)//Valida de quien es el turno para saber que pieza tiene que comer
                 {
-                    casillas[a][b] = "f1";//Si puede comer, cambia esa posicion por el fantasma del jugador y retorna true
-                    return true;
-                }
-            }else
-            {
-                if (casillas[a][b].equals("f1"))
+                    if (casillas[a][b].equals("f2"))
+                    {
+                        casillas[a][b] = "f1";//Si puede comer, cambia esa posicion por el fantasma del jugador y retorna true
+                        return true;
+                    }
+                }else
                 {
-                    casillas[a][b] = "f2";
-                    return true;
+                    if (casillas[a][b].equals("f1"))
+                    {
+                        casillas[a][b] = "f2";
+                        return true;
+                    }
                 }
             }
         }catch(ArrayIndexOutOfBoundsException e)
@@ -277,15 +337,15 @@ public class Tablero {
     public boolean ValidarMovimiento(int x, int y,int a,int b, int turno)
     {
         try{
-            if(casillas[a][b].equals("_ ") && b >1 && b <6)
+            if(b >1 && b <6)
             {
                     if(casillas[x][y].equals("f1") && turno==0)
                     {
-                        if(a==x-1 && (b==y+1 || b==y-1 || b==y))
+                        if((a==x-1 || a ==x) && (b==y+1 || b==y-1 || b==y))
                             return true;
                     }else if(casillas[x][y].equals("f2") && turno==1)
                     {
-                        if(a==x+1 && (b==y+1 || b==y-1 || b==y))
+                        if((a==x+1 || a==x) && (b==y+1 || b==y-1 || b==y))
                             return true;
                     }
             }
@@ -298,12 +358,12 @@ public class Tablero {
     
     public boolean Mover(int x,int y,int a, int b,int turno,Player jugador)//"x" y "y" son la coordenada de seleccion y "a" y "b" la coordenada de movimiento
     {                                                                                                       //el jugador es el contrario al del turno actual, es usado para imprimir el tipo de fantasma comido
-        if(ValidarMovimiento(x,y,a,b,turno))
+        if(ValidarMovimiento(x,y,a,b,turno) && casillas[a][b].equals("_ "))
         {
             casillas[a][b] = casillas[x][y]; 
             casillas[x][y] = "_ ";
             return true;
-        }else if(Comer(turno,a,b))
+        }else if(Comer(turno,a,b,x,y))
         {
             try{
                 casillas[x][y] = "_ ";
@@ -363,4 +423,48 @@ public class Tablero {
             
     }
     
-}   
+    
+    public boolean ValidarVictoria(int turno)
+    {
+        int buenos=0;
+        int malos=0;
+        if (turno == 0)
+        {
+            for(Fantasmas ghost : fantasmas2)
+            {
+                if (ghost != null)
+                {
+                    if(ghost.getTipo().equals("Bueno"))
+                        buenos++;
+                    else
+                        malos++;
+                }
+            }          
+        }else
+        {
+            for(Fantasmas ghost : fantasmas1)
+            {
+                if (ghost!=null)
+                {
+                    if(ghost.getTipo().equals("Bueno"))
+                        buenos++;
+                    else
+                        malos++;               
+                }
+            }
+            
+            if(buenos == 0)
+            {
+                System.out.println("Te has comido todos los fantasmas buenos has ganado!");
+                return true;
+            }
+            else if(malos==0)
+            {
+                System.out.println("Te has comido todos los fantasmas malos has perdido!");
+                return true;
+            }
+        }
+        return false;
+    }
+    
+}
