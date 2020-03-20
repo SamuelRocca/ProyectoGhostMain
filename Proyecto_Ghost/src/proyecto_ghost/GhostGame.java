@@ -15,6 +15,7 @@ public class GhostGame {
     public static Player players[];
     public static Player Stats;
     private Player loggedUser;
+    private String tipos[] = {"Malo","Bueno"};
     public Fantasmas fantasmas1[];
     public Fantasmas fantasmas2[];
     private static int fantasmasComidos1 = 0;
@@ -96,22 +97,23 @@ public class GhostGame {
         
         for (int i = 0; i < fantasmas1.length;i++)
         {
-            int tipo = r.nextInt(2);//crea un numero aleatorio
-            if (tipo == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
+            int num = r.nextInt(2);//crea un numero aleatorio
+            String tipo = tipos[num];
+            if (num == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
             {
                 malo++;
                 if(malo > cantidad/2)//Si la cantidad de fantasmas sobrepasa la mitad se cambia el tipo de fantasma para conseguir la misma cantidad de fantasmas
                 {
-                    tipo = 1;
+                    tipo = "Bueno";
                     bueno++;
                 }
             }
-            else if(tipo == 1)
+            else if(num == 1)
             {
                 bueno++;
                 if(bueno > cantidad/2)
                 {
-                    tipo = 0;
+                    tipo = "Malo";
                     malo++;
                 }
             }
@@ -122,22 +124,23 @@ public class GhostGame {
         bueno = 0;
         for(int i = 0; i < fantasmas2.length;i++)
         {
-            int tipo = r.nextInt(1);
-            if (tipo == 0)
+            int num = r.nextInt(2);
+            String tipo = tipos[num];
+            if (num == 0)
             {      
                 malo++;
                 if(malo > cantidad/2)
                 {
-                    tipo = 1;
+                    tipo = "Bueno";
                     bueno++;
                 }
             }
-            else if(tipo == 1)
+            else if(num == 1)
             {
                 bueno++;
                 if(bueno>cantidad/2)
                 {
-                    tipo = 0;
+                    tipo = "Malo";
                     malo++;
                 }
             }
