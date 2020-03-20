@@ -13,16 +13,16 @@ public class GhostGame {
         de la coordenada los 0 son para los guiones
     */
     public static Player players[];
+    public static Player Stats;
     private Player loggedUser;
     public Fantasmas fantasmas1[];
     public Fantasmas fantasmas2[];
-    private String tipos[] = {"Malo","Bueno"};
     private static int fantasmasComidos1 = 0;
     private static int fantasmasComidos2 = 0;
 
     public GhostGame()
     {
-        this.players = new Player[10];
+        GhostGame.players = new Player[10];
     }
     
     public Player buscar(String nick)
@@ -96,23 +96,22 @@ public class GhostGame {
         
         for (int i = 0; i < fantasmas1.length;i++)
         {
-            int num = r.nextInt(2);//crea un numero aleatorio
-            String tipo = tipos[num];
-            if (num == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
+            int tipo = r.nextInt(2);//crea un numero aleatorio
+            if (tipo == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
             {
                 malo++;
                 if(malo > cantidad/2)//Si la cantidad de fantasmas sobrepasa la mitad se cambia el tipo de fantasma para conseguir la misma cantidad de fantasmas
                 {
-                    tipo = "Bueno";
+                    tipo = 1;
                     bueno++;
                 }
             }
-            else if(num == 1)
+            else if(tipo == 1)
             {
                 bueno++;
                 if(bueno > cantidad/2)
                 {
-                    tipo = "Malo";
+                    tipo = 0;
                     malo++;
                 }
             }
@@ -123,23 +122,22 @@ public class GhostGame {
         bueno = 0;
         for(int i = 0; i < fantasmas2.length;i++)
         {
-            int num = r.nextInt(2);
-            String tipo = tipos[num];
-            if (num == 0)
+            int tipo = r.nextInt(1);
+            if (tipo == 0)
             {      
                 malo++;
                 if(malo > cantidad/2)
                 {
-                    tipo = "Bueno";
+                    tipo = 1;
                     bueno++;
                 }
             }
-            else if(num == 1)
+            else if(tipo == 1)
             {
                 bueno++;
                 if(bueno>cantidad/2)
                 {
-                    tipo = "Malo";
+                    tipo = 0;
                     malo++;
                 }
             }
@@ -268,12 +266,19 @@ public class GhostGame {
     
     public void tablero()//Valida cuanto es el tamaño del arreglo para saber que tablero imprimir
     {
-        if (fantasmas1.length == 8)
-            Normal();
-        else if (fantasmas1.length == 4)
-            Expert();
-        else if (fantasmas1.length == 2)
-            Genius();
+        switch (fantasmas1.length) {
+            case 8:
+                Normal();
+                break;
+            case 4:
+                Expert();
+                break;
+            case 2:
+                Genius();
+                break;
+            default:
+                break;
+        }
     }
     
     public void MostrarFantasmas(int turno) //Este metodo sirve para mostrar la cantidad de fantasmas que tiene el jugador en turno
@@ -459,11 +464,15 @@ public class GhostGame {
             if(buenos == 0)
             {
                 System.out.println("Te has comido todos los fantasmas buenos has ganado!");
+                String resultado = "Te has comido todos los fantasmas buenos has ganado!";
+                Stats.addResultado(resultado);
                 return true;
             }
             else if(malos==0)
             {
                 System.out.println("Te has comido todos los fantasmas malos has perdido!");
+                String resultado = "Te has comido todos los fantasmas malos has perdido!";
+                Stats.addResultado(resultado);
                 return true;
             }
         }
