@@ -83,10 +83,6 @@ public class Main {
                         switch (opcionMenu2)
                         {
                             case 1:
-                                if(game.contarPlayers()== false){
-                                    System.out.println("No hay suficientes jugadores registrados. Ingrese un nuevo Jugador en Crear Player");
-                                    break;
-                                }
                                 do{
                                 System.out.print("Nombre del jugador 2: ");
                                 Player jugador2 = game.buscar(leer.next());

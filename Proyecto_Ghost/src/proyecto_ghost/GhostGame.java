@@ -467,12 +467,4 @@ public class GhostGame {
         return false;
     }
     
-    public boolean contarPlayers(){
-        int contar = 0;
-        for(Player count : players){
-           if(count != null){
-               contar++;
-           }
-       }       return contar>1;
-    }
 }
