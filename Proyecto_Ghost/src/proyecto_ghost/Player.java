@@ -4,7 +4,8 @@ package proyecto_ghost;
 public class Player {
         
     private int  puntos;
-    private String nick, contra;
+    private final String nick;
+    private final String contra;
     public Resultados Resultados[];
     static int maxResults = 10;
     
@@ -42,12 +43,12 @@ public class Player {
     
     public void addResultado(String resultado)
     {
-        for(Resultados search : Resultados)
-        {
-            if(search != null)
+        if(Resultados[0] == null)
             {
-                
+                Resultados[0] = new Resultados(resultado);
+                return;
             }
-        }
+        System.arraycopy(Resultados, 0, Resultados, 1, Resultados.length);
+        Resultados[0]= new Resultados(resultado);
     }
 }

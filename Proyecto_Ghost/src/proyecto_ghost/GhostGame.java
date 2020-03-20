@@ -13,6 +13,7 @@ public class GhostGame {
         de la coordenada los 0 son para los guiones
     */
     public static Player players[];
+    public static Player Stats;
     private Player loggedUser;
     public Fantasmas fantasmas1[];
     public Fantasmas fantasmas2[];
@@ -21,7 +22,7 @@ public class GhostGame {
 
     public GhostGame()
     {
-        this.players = new Player[10];
+        GhostGame.players = new Player[10];
     }
     
     public Player buscar(String nick)
@@ -265,12 +266,19 @@ public class GhostGame {
     
     public void tablero()//Valida cuanto es el tamaño del arreglo para saber que tablero imprimir
     {
-        if (fantasmas1.length == 8)
-            Normal();
-        else if (fantasmas1.length == 4)
-            Expert();
-        else if (fantasmas1.length == 2)
-            Genius();
+        switch (fantasmas1.length) {
+            case 8:
+                Normal();
+                break;
+            case 4:
+                Expert();
+                break;
+            case 2:
+                Genius();
+                break;
+            default:
+                break;
+        }
     }
     
     public void MostrarFantasmas(int turno) //Este metodo sirve para mostrar la cantidad de fantasmas que tiene el jugador en turno
@@ -456,11 +464,15 @@ public class GhostGame {
             if(buenos == 0)
             {
                 System.out.println("Te has comido todos los fantasmas buenos has ganado!");
+                String resultado = "Te has comido todos los fantasmas buenos has ganado!";
+                Stats.addResultado(resultado);
                 return true;
             }
             else if(malos==0)
             {
                 System.out.println("Te has comido todos los fantasmas malos has perdido!");
+                String resultado = "Te has comido todos los fantasmas malos has perdido!";
+                Stats.addResultado(resultado);
                 return true;
             }
         }
