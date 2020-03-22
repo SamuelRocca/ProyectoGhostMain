@@ -7,6 +7,7 @@ public class Player {
     private final String nick;
     private final String contra;
     public Resultados Resultados[];
+    public Resultados Results;
     static int maxResults = 10;
     
     public Player (String nombre, String contra) //Constructo requiere nickname y contraseña
@@ -43,12 +44,22 @@ public class Player {
     
     public void addResultado(String resultado)
     {
-        if(Resultados[0] == null)
-            {
-                Resultados[0] = new Resultados(resultado);
-                return;
-            }
+        if(Resultados[10]!= null)
+            Resultados[10] = null;
+        else if(Resultados[0] == null)
+        {
+            Resultados[0] = new Resultados(resultado);
+        }else
+        {
         System.arraycopy(Resultados, 0, Resultados, 1, Resultados.length);
         Resultados[0]= new Resultados(resultado);
+        }
+    }
+    public void printResults()
+    {
+        for(Resultados print : Resultados)
+        {
+            
+        }
     }
 }

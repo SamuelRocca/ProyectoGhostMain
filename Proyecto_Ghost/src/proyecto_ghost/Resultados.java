@@ -16,4 +16,8 @@ public class Resultados {
     {
         return resultado;
     }
+    
+    public void Imprimir (){
+        System.out.println(resultado);
+    }
 }
