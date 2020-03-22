@@ -126,11 +126,13 @@ public class Main {
                                                 }
                                             }while(!loop);
                                             
+                                            victoria = game.ValidarVictoria(turno);
+                                            
                                             if (turno > 0)//Cambia entre 0 y 1 para validar de quien es el turno
                                                 turno--;
                                             else
                                                 turno++;                                        
-                                    }while (!game.ValidarVictoria(0) || !game.ValidarVictoria(1));
+                                    }while (!victoria);
                                 }else
                                 {
                                     System.out.println("Vuelve a intentarlo!");
@@ -186,7 +188,7 @@ public class Main {
                                     }
                                 }while(loop);
                             case 4:
-                                
+                                    
                                 break;
                                 
                             case 5:

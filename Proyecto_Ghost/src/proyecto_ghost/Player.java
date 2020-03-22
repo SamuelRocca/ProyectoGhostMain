@@ -43,12 +43,13 @@ public class Player {
     
     public void addResultado(String resultado)
     {
-        if(Resultados[0] == null)
+        if(Resultados[0] != null)
             {
+                System.arraycopy(Resultados, 0, Resultados, 1, Resultados.length);
+                Resultados[0]= new Resultados(resultado);
+            }else
                 Resultados[0] = new Resultados(resultado);
-                return;
-            }
-        System.arraycopy(Resultados, 0, Resultados, 1, Resultados.length);
-        Resultados[0]= new Resultados(resultado);
+        
+        
     }
 }

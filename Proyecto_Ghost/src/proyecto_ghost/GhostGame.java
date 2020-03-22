@@ -352,11 +352,11 @@ public class GhostGame {
             {
                     if(casillas[x][y].equals("f1") && turno==0)
                     {
-                        if((a==x-1 || a ==x) && (b==y+1 || b==y-1 || b==y))
+                        if((a==x-1 && b==y) || ((a==x) && (b==y+1 || b==y-1)))
                             return true;
                     }else if(casillas[x][y].equals("f2") && turno==1)
                     {
-                        if((a==x+1 || a==x) && (b==y+1 || b==y-1 || b==y))
+                        if((a==x+1 && b==y) || ((a==x) && (b==y+1 || b==y-1)))
                             return true;
                     }
             }
@@ -450,7 +450,17 @@ public class GhostGame {
                     else
                         malos++;
                 }
-            }          
+            }  
+          
+            for(int c = 0; c<7;c++)
+            {
+                if(casillas[1][c].equals("f1") && fantasmas1[fantasmasComidos1].equals("Bueno"))
+                {
+                    String resultado = "Has llevado un fantasma Bueno a la salida!!";
+                    System.out.println(resultado);
+                    Stats.addResultado(resultado);
+                }
+            }
         }else
         {
             for(Fantasmas ghost : fantasmas1)
@@ -463,22 +473,31 @@ public class GhostGame {
                         malos++;               
                 }
             }
-            
-            if(buenos == 0)
+            for(int c = 0; c<7;c++)
             {
-                System.out.println("Te has comido todos los fantasmas buenos has ganado!");
-                String resultado = "Te has comido todos los fantasmas buenos has ganado!";
+                if(casillas[1][c].equals("f1") && fantasmas2[fantasmasComidos2].equals("Bueno"))
+                {
+                    String resultado = "Has llevado un fantasma Bueno a la salida!!";
+                    System.out.println(resultado);
+                    Stats.addResultado(resultado);
+                }
+            }
+        }
+        
+        if(buenos == 0)
+            {
+                String resultado = "Te comiste todos los fantasmas buenos has ganado!";
+                System.out.println(resultado);
                 Stats.addResultado(resultado);
                 return true;
             }
             else if(malos==0)
             {
-                System.out.println("Te has comido todos los fantasmas malos has perdido!");
-                String resultado = "Te has comido todos los fantasmas malos has perdido!";
+                String resultado = "Te comiste todos los fantasmas malos has perdido!";
+                System.out.println(resultado);
                 Stats.addResultado(resultado);
                 return true;
             }
-        }
         return false;
     }
     
