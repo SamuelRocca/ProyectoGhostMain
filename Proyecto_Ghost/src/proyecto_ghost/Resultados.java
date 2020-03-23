@@ -18,6 +18,6 @@ public class Resultados {
     }
     
     public void Imprimir (){
-        System.out.println(resultado);
+        System.out.println("\t\t\t" + resultado);
     }
 }

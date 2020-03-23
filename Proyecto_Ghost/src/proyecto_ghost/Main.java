@@ -7,9 +7,10 @@ import java.util.Scanner;
 public class Main {
     
     public static GhostGame game = new GhostGame();
+    public static Scanner leer = new Scanner (System.in).useDelimiter("\n");
     public static void main(String[] args) {
             //Constructores
-            Scanner leer = new Scanner (System.in).useDelimiter("\n");
+            
             Random r = new Random();
             //Variables
             boolean loop = true, victoria = false;
@@ -17,7 +18,7 @@ public class Main {
             int MenuConfig = 0;
             int opcionMenu = 0;
             int filas = 0,filas1 = 0,columnas = 0,columnas1=0;
-            Player logged = null;
+            Player logged = null, jugador1 = null,jugador2=null;
             String usuario = null, contrasenia;
             
             do{
@@ -33,24 +34,24 @@ public class Main {
                     }while(true);
                     switch (opcionMenu)
                     {
-                        case 1:
+                        case 1: //Menu de loggin
                                 System.out.print("\nNombre de usuario: ");
-                                usuario = leer.next();
+                                jugador1 = game.buscar(leer.next());
                                 System.out.print("Contraseña: ");
                                 contrasenia = leer.next();
                                 
-                                if(game.VerificarUsuario(usuario, contrasenia))
+                                if(jugador1 != null && game.VerificarUsuario(jugador1.getNick(), contrasenia))
                                 {
-                                    game.setUserLogged(game.buscar(usuario)); //Se usa para establecer en la clase GhostGame el usuario que esta logged in
+                                    game.setUserLogged(jugador1); //Se usa para establecer en la clase GhostGame el usuario que esta logged in
                                 }else
                                 {
-                                    System.out.print("Contraseña o usuario incorrectos!");
+                                    System.out.print("Contraseña o usuario incorrectos!\n");
                                 }              
                                 
                                 contrasenia = null;
                             break;
                             
-                        case 2:
+                        case 2: //Menu para crear un nuevo player
                                 System.out.print("Ingrese un nombre de usuario: ");
                                 usuario = leer.next();
                                 System.out.print("Ingrese una contraseña: ");
@@ -59,7 +60,8 @@ public class Main {
                                 if (game.Agregar(usuario, contrasenia))
                                 {
                                     System.out.println("Usuario Registrado con exito");
-                                    game.setUserLogged(game.buscar(usuario));
+                                    jugador1 = game.buscar(usuario);
+                                    game.setUserLogged(jugador1);
                                 }else
                                 {
                                     System.out.println("Nombre de usuario ya esta registrado!");
@@ -76,7 +78,7 @@ public class Main {
                     while(game.getUserLogged() != null){//Se valida que haya un usario logged in para cargar el menu principal
                         
                         //Menu Principal
-                        System.out.println("\nBienvenido " + game.buscar(usuario).getNick() + "!");
+                        System.out.println("\nBienvenido " + jugador1.getNick() + "!");
                         System.out.print("1. Jugar\t2. Configuracion\t3. Reportes\t4. Mi perfil\t5. Salir\nQue desea hacer?: ");
                         int opcionMenu2 = leer.nextInt();
                         
@@ -89,12 +91,12 @@ public class Main {
                                 }
                                 do{
                                 System.out.print("Nombre del jugador 2: ");
-                                Player jugador2 = game.buscar(leer.next());
-                                Player jugador1 = game.buscar(usuario);
+                                jugador2 = game.buscar(leer.next());
                                 if (jugador2 != null && jugador2 != jugador1)
                                 {
                                     game.AsignarFantasmas(fantasmas);
                                     game.tablero();
+                                    turno = 0;
                                     do{
                                             game.ImprimirTablero();
                                             System.out.println("\n\t\t\tTurno  de: " + (turno==0 ? jugador1.getNick() : jugador2.getNick()));
@@ -119,14 +121,14 @@ public class Main {
                                                     loop = false;
                                                 }
                                                 
-                                                if(!game.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1))
+                                                if(!game.Mover(filas, columnas, filas1, columnas1,turno,turno==0?jugador2:jugador1)&& filas!=-1 && columnas!=-1)
                                                 {
                                                     System.out.println("\t\tCoordenada incorrecta porfavor vuelve a intentar!");
                                                     loop = false;
                                                 }
                                             }while(!loop);
                                             
-                                            victoria = game.ValidarVictoria(turno);
+                                            victoria = game.ValidarVictoria(turno,filas,columnas,turno==0?jugador1:jugador2,turno==0?jugador2:jugador1);
                                             
                                             if (turno > 0)//Cambia entre 0 y 1 para validar de quien es el turno
                                                 turno--;
@@ -138,6 +140,7 @@ public class Main {
                                     System.out.println("Vuelve a intentarlo!");
                                 }
                                 
+                                loop = false;
                                 
                                 }while(loop);
                                 break;
@@ -175,10 +178,10 @@ public class Main {
                                 MenuConfig= leer.nextInt();
                                     switch(MenuConfig){
                                         case 1:
-                                            
+                                                jugador1.printResults();
                                             break;
                                         case 2:
-                                            
+                                                game.Ranking();
                                             break;
                                         case 3:
                                             
@@ -187,8 +190,48 @@ public class Main {
                                             break;
                                     }
                                 }while(loop);
-                            case 4:
+                            case 4: //Inicio del menu de mi perfil
+                                    System.out.print("\n1. Mostrar Datos\t2. Modificar Datos\t3. Eliminar Cuenta\t4. Regresar\nEscoga una opcion: ");
+                                    MenuConfig = leer.nextInt();
                                     
+                                    switch(MenuConfig)
+                                    {
+                                        case 1:
+                                                game.getUserLogged().MostrarDatos();
+                                            break;
+                                        case 2:
+                                                System.out.print("\n1. Nickname\t2. Contraseña\nQue desea modificar: ");
+                                                int opcion = leer.nextInt();
+                                                
+                                                switch(opcion)
+                                                {
+                                                    case 1:
+                                                            System.out.print("\nQue nickname desea: ");
+                                                            String nuevoNick = leer.next();
+                                                            if(game.buscar(nuevoNick) == null)
+                                                            {
+                                                                System.out.print("\n1. Si\t2. No\nEsta seguro que desea cambiarlo: ");
+                                                                game.getUserLogged().setNick(nuevoNick,leer.nextInt());
+                                                            }else
+                                                                System.out.println("\t\t\tEse nickname ya existe!");
+                                                        break;
+                                                    case 2:
+                                                            System.out.print("\nQue contraseña desea: ");
+                                                            String nuevaContra = leer.next();
+                                                            System.out.print("\n1. Si\t2.No\nEsta seguro que desea cambiarlo: ");
+                                                            game.getUserLogged().setContra(nuevaContra, leer.nextInt());
+                                                        break;
+                                                }//Fin del switch opcion
+                                            break;
+                                        case 3:
+                                                System.out.print("\n1. Si\t2. No\nEsta seguro que desea eliminar la cuenta?: ");
+                                                opcion = leer.nextInt();
+                                                game.EliminarCuenta(jugador1, opcion);
+                                                game.setUserLogged(opcion==1?null:jugador1);
+                                            break;
+                                            
+                                    }//Fin del switch Menu de Mi Perfil
+                                
                                 break;
                                 
                             case 5:

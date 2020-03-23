@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class GhostGame {
     Random r = new Random();
+    Main main;
     public static String casillas[][]= new String[7][7];
     private static int tablero[][] = {{1,2,3,4,5,6,7},{1,0,-1,-2,-3,-4,0},{2,0,-5,-6,-7,-8,0},{3,0,0,0,0,0,0},{4,0,0,0,0,0,0},{5,0,5,6,7,8,0},{6,0,1,2,3,4,0}};
     /*
@@ -70,6 +71,24 @@ public class GhostGame {
             
             return false;
         }
+    
+    public void EliminarCuenta(Player jugador, int opcion)
+    {
+        if(opcion == 1)
+        {
+            for (int i = 0; i < players.length;i++)
+            {
+                if(players[i] != null)
+                {
+                    if(players[i].getNick().equals(jugador.getNick()))
+                    {
+                        players[i] = null;
+                        System.out.println("La cuenta se elimino con exito");
+                    }
+                }
+            }
+        }
+    }
  
     public Player getUserLogged(){
         return loggedUser;
@@ -86,6 +105,32 @@ public class GhostGame {
             }
             System.out.println("");
         }      
+    }
+    
+    public void Ranking()
+    {
+        int mayorPuntaje = 0;
+        for(Player jugador : players)
+        {
+            if (jugador != null)
+            {
+                if (jugador.getPuntos() > mayorPuntaje)
+                    mayorPuntaje = jugador.getPuntos();
+            }
+        }
+        
+        
+        for (int i = mayorPuntaje;i>=0;i--)
+        {
+            for(Player jugador : players)
+            {
+                if(jugador != null)
+                {
+                    if(jugador.getPuntos()==i)
+                    jugador.MostrarDatos();
+                }
+            } 
+        }
     }
 
     public void AsignarFantasmas(int cantidad)
@@ -317,6 +362,25 @@ public class GhostGame {
         System.out.println("\t\tBuenos: " + bueno + "\t\tMalos: " + malo);
     }
     
+    public boolean Rendirse(int x,int y,Player player,Player player2)
+    {
+        if (x == -1 && y==-1)
+        {
+            System.out.print("\n1. Si\t2. No\nSeguro que quieres retirarte?: ");
+            int opcion = main.leer.nextInt();
+            if (opcion == 1)
+            {
+                String resultado = player.getNick() + " se retiro del juego";
+                System.out.println(resultado);
+                player.addResultado(resultado);
+                player2.AgregarPuntos();
+                return true;
+            }
+            
+        }
+        return false;
+    }
+    
     public boolean Comer(int turno,int a,int b,int x,int y)
     {
         try{
@@ -395,7 +459,7 @@ public class GhostGame {
                 fantasmasComidos1++;
             }
             return true;
-        }else
+        }else        
             System.out.println("\t\t\t\tMovimiento no valido!!");
             return false;
     }
@@ -435,8 +499,8 @@ public class GhostGame {
     }
     
     
-    public boolean ValidarVictoria(int turno)
-    {
+    public boolean ValidarVictoria(int turno, int x,int y,Player player,Player player2)//Las variables x y y son la coordenada de seleccion usada para validar si el usuario quiere rendirse
+    {                                                                                                           //player es el jugador que esta en el turno actual y player 2 es el contrario
         int buenos=0;
         int malos=0;
         if (turno == 0)
@@ -456,9 +520,11 @@ public class GhostGame {
             {
                 if(casillas[1][c].equals("f1") && fantasmas1[fantasmasComidos1].equals("Bueno"))
                 {
-                    String resultado = "Has llevado un fantasma Bueno a la salida!!";
-                    System.out.println(resultado);
-                    Stats.addResultado(resultado);
+                    String resultado = "Llevaste un fantasma Bueno a la salida!!";
+                    System.out.println("\t\t" + resultado);
+                    player.addResultado(resultado);
+                    player.AgregarPuntos();
+                    return true;
                 }
             }
         }else
@@ -475,29 +541,39 @@ public class GhostGame {
             }
             for(int c = 0; c<7;c++)
             {
-                if(casillas[1][c].equals("f1") && fantasmas2[fantasmasComidos2].equals("Bueno"))
+                if(casillas[6][c].equals("f1") && fantasmas2[fantasmasComidos2].equals("Bueno"))
                 {
-                    String resultado = "Has llevado un fantasma Bueno a la salida!!";
-                    System.out.println(resultado);
-                    Stats.addResultado(resultado);
+                    String resultado = "Llevaste un fantasma Bueno a la salida!!";
+                    System.out.println("\t\t" + resultado);
+                    player.addResultado(resultado);
+                    player2.addResultado(resultado);
+                    player.AgregarPuntos();
+                    return true;
                 }
             }
         }
         
         if(buenos == 0)
             {
-                String resultado = "Te comiste todos los fantasmas buenos has ganado!";
-                System.out.println(resultado);
-                Stats.addResultado(resultado);
+                String resultado = player.getNick() + " se comio todos los fantasmas buenos de "+ player2.getNick() +" y ha ganado!";
+                System.out.println("\t\t" + resultado);
+                player.addResultado(resultado);
+                player2.addResultado(resultado);
+                player.AgregarPuntos();
                 return true;
             }
             else if(malos==0)
             {
-                String resultado = "Te comiste todos los fantasmas malos has perdido!";
-                System.out.println(resultado);
-                Stats.addResultado(resultado);
+                String resultado = player.getNick() + "se comio todos los fantasmas malos de " + player2.getNick() + " y ha perdido!";
+                System.out.println("\t\t" + resultado);
+                player.addResultado(resultado);
+                player2.addResultado(resultado);
+                player2.AgregarPuntos();
                 return true;
             }
+        
+            if (Rendirse(x,y,player,player2))
+                return true;
         return false;
     }
     
