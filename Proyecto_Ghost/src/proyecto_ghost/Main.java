@@ -14,6 +14,7 @@ public class Main {
             Random r = new Random();
             //Variables
             boolean loop = true, victoria = false;
+            int gameMode=0;
             int fantasmas = 8, turno = 0;
             int MenuConfig = 0;
             int opcionMenu = 0;
@@ -94,7 +95,11 @@ public class Main {
                                 jugador2 = game.buscar(leer.next());
                                 if (jugador2 != null && jugador2 != jugador1)
                                 {
+                                    if(gameMode == 0){
                                     game.AsignarFantasmas(fantasmas);
+                                    }else if(gameMode == 1){
+                                        game.AsignarFantasmasManual(fantasmas);
+                                    }
                                     game.tablero();
                                     turno = 0;
                                     do{
@@ -145,14 +150,14 @@ public class Main {
                                 }while(loop);
                                 break;
                             case 2:
-                                do{
+                                menu: do{
                                     System.out.print("\n1. Dificultad\t2. Modo de Juego\t3. Regresar\nEscoga configuracion: ");
                                     MenuConfig= leer.nextInt();
 
                                     switch(MenuConfig)
                                     {
                                         case 1:
-                                                System.out.print("\n1. NORMAL\t2. EXPERT\t3. GENIUS\nSeleccione modo de juego: ");
+                                                System.out.print("\n1. NORMAL\t2. EXPERT\t3. GENIUS\nSeleccione Dificultad: ");
                                                 int modoJuego = leer.nextInt();
 
                                                 if (modoJuego == 1)
@@ -164,10 +169,17 @@ public class Main {
 
                                             break;
                                         case 2:
+                                            System.out.print("\n1. Aleatorio\t2.Manual\nSeleccione Modo de Juego: ");
+                                            gameMode=leer.nextInt();
+                                            if(gameMode==1)
+                                                gameMode = 0;
+                                            else if(gameMode== 2)
+                                                gameMode = 1;
+                                            else
+                                                gameMode = 0;
                                             break;
                                         case 3:
-                                                loop = false;
-                                            break;
+                                            break menu;
                                         
                                     }
                                 }while(loop);

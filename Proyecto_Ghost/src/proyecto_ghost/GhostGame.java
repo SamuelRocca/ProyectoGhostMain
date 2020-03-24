@@ -132,7 +132,71 @@ public class GhostGame {
             } 
         }
     }
-
+    public void AsignarFantasmasManual(int cantidad){
+        int malo = 0;//Cuanto cuantos fantasmas de cada tipo se han puesto para no pasar de la mitad
+        int bueno = 0;//
+        fantasmas1 = new Fantasmas[cantidad];//Le da al arreglo la cantidad ingresada en el parametro que es depende de la dificultad
+        fantasmas2 = new Fantasmas[cantidad];
+        
+        for (int i = 0; i < fantasmas1.length;i++)
+        {
+            int num = 0;//Si es bueno o malo
+            String tipo = tipos[num];
+            if (num == 0)//Si el numero aleatorio es 0 entonces el fantasma sera malo
+            {
+                malo++;
+                if(malo > cantidad/2)//Si la cantidad de fantasmas sobrepasa la mitad se cambia el tipo de fantasma para conseguir la misma cantidad de fantasmas
+                {
+                    tipo = "Bueno";
+                    bueno++;
+                }
+                System.out.print("Escoge una coordenada de seleccion en filas: ");
+                int filas = Main.leer.nextInt();
+                fantasmas1[filas] = new Fantasmas(tipo, 1); //Se crea en esa posicion un nuevo fantasma de ese tipo, el numero 1 es por el turno del jugador
+                num++;
+            }
+            if(num == 1)
+            {
+                System.out.print("Escoge una coordenada de seleccion en filas: ");
+                int filas = Main.leer.nextInt();
+                
+                fantasmas1[filas] = new Fantasmas(tipo, 1); //Se crea en esa posicion un nuevo fantasma de ese tipo, el numero 1 es por el turno del jugador
+                bueno++;
+                if(bueno > cantidad/2)
+                {
+                    tipo = "Malo";
+                    malo++;
+                }
+            }
+            
+        }
+        malo = 0;//Se reincian las variables para contar los fantasmas del jugador 2
+        bueno = 0;
+        for(int i = 0; i < fantasmas2.length;i++)
+        {
+            int num = 0;
+            String tipo = tipos[num];
+            if (num == 0)
+            {      
+                malo++;
+                if(malo > cantidad/2)
+                {
+                    tipo = "Bueno";
+                    bueno++;
+                }
+            }
+            else if(num == 1)
+            {
+                bueno++;
+                if(bueno>cantidad/2)
+                {
+                    tipo = "Malo";
+                    malo++;
+                }
+            }
+            fantasmas2[i] = new Fantasmas(tipo, 2);
+        }
+    }
     public void AsignarFantasmas(int cantidad)
     {
         int malo = 0;//Cuanto cuantos fantasmas de cada tipo se han puesto para no pasar de la mitad
@@ -364,10 +428,10 @@ public class GhostGame {
     
     public boolean Rendirse(int x,int y,Player player,Player player2)
     {
-        if (x == -1 && y==-1)
+        if (x == -1 || y==-1)
         {
             System.out.print("\n1. Si\t2. No\nSeguro que quieres retirarte?: ");
-            int opcion = main.leer.nextInt();
+            int opcion = Main.leer.nextInt();
             if (opcion == 1)
             {
                 String resultado = player.getNick() + " se retiro del juego";
@@ -572,9 +636,7 @@ public class GhostGame {
                 return true;
             }
         
-            if (Rendirse(x,y,player,player2))
-                return true;
-        return false;
+        return Rendirse(x,y,player,player2);
     }
     
     public boolean contarPlayers(){
